@@ -11,15 +11,6 @@ import static cli.Cli.*;
 
 public class Runner {
 
-
-
- /*   public static void main(String[] args) {
-        Options options = Cli.generateOptions();
-        CommandLine commandLine = Cli.generateCommandLine(options, args);
-        final String fileName = commandLine.getOptionValue(FILE_OPTION);
-        delegateToIngester(fileName);
-    }*/
-
     private static void delegateToIngester(String fileName) {
         Injector ingesterInjector = Guice.createInjector(new IngesterModule());
         Ingester ingester = ingesterInjector.getInstance(Ingester.class);
