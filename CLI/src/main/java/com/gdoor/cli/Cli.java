@@ -1,4 +1,4 @@
-package cli;
+package com.gdoor.cli;
 
 import org.apache.commons.cli.*;
 

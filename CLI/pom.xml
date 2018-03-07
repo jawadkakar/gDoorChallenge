@@ -30,11 +30,7 @@
             <artifactId>commons-cli</artifactId>
             <version>${commons-cli.version}</version>
         </dependency>
-        <dependency>
-            <groupId>gdoor</groupId>
-            <artifactId>gdoor.elastic.search.Ingester</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+
 
     </dependencies>
 
