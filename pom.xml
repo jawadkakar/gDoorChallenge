@@ -11,9 +11,28 @@
     <modules>
         <module>CLI</module>
         <module>Ingester</module>
+        <module>Common</module>
     </modules>
     <name>GlassDoorCodeChallenge</name>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <properties>
         <commons-cli.version>1.4</commons-cli.version>
+        <jackson.dataformat.yaml.version>2.9.4</jackson.dataformat.yaml.version>
+        <commons.lang3.version>3.7</commons.lang3.version>
     </properties>
+
+
+
 </project>
