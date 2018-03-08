@@ -10,8 +10,8 @@ mvn clean install
 # 4: When the project is successfully build 
  cd executabl
 # 5: Start Elastic Search
-# 6: Run gDoorChallenge by typing the following
- java -jar gdoor.code.challenge.cli-1.0-SNAPSHOT-jar-with-dependencies.jar -f C:/gDoorChallenge/SearchTask.yaml
+# 6: Run gDoorChallenge by typing the following, make user path for the datafile is correct. 
+ java -jar gdoor.code.challenge.cli-1.0-SNAPSHOT-jar-with-dependencies.jar -f /gDoorChallenge/SearchTask.yaml
  
 
 
