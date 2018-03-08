@@ -27,10 +27,6 @@ public class PersisterImpl implements Persister {
     }
 
     /**
-     * if(Optional.ofNullable(jsonString).isPresent() && jsonString.length() > 0) {
-          IndexResponse response = client.prepareIndex("gdoor", "SearchTask").setSource(jsonString, XContentType.JSON).get();
-          System.out.println(response.toString());
-       }
      * @param taskHolder
      */
     @Override
