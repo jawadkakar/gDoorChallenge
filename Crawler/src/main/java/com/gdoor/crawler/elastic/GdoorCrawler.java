@@ -11,7 +11,11 @@ import com.gdoor.persister.module.PersisterModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
 
 public class GdoorCrawler implements Crawler {
     @Override
@@ -19,46 +23,85 @@ public class GdoorCrawler implements Crawler {
         GoogleCrawler gCrawler = new GoogleCrawler();
         MetaDataExtractor m = new MetaDataExtractor();
         KeywordExtractor keywordExtractor = new KeywordExtractor();
-        String[] keywords = keywordExtractor.extractKeyWord(searchTaskHolder);
-        //keywords = new String[] {"Afghanistan"};
-        //put it inside Optional
-        SearchTaskImpl.Properties searchHolderProperties  = searchTaskHolder.getSearchTask().getProperties();
-        Property taskNameProperty = searchHolderProperties.getTaskName();
-        try {
-            for (int i = 0; i < keywords.length; i++) {
-                List<String> links = gCrawler.getUrlsFromGoogleFromASearchTerm(keywords[i].trim());
-                System.out.println("Total result returned: " + links.size());
-                System.out.println("Keyword: "+keywords[i]);
-                for (String link : links) {
-                    System.out.println();
-                    ElasticDataHolder holder = new ElasticDataHolder();
-                    SearchTaskImpl  searchTask = new SearchTaskImpl();
-                    SearchTaskImpl.Properties properties = new SearchTaskImpl.Properties();
-                    properties.setTaskName(taskNameProperty);
-                    System.out.println("URL: " +link);
-                    UrlContentDownLoader contentDownLoader = new UrlContentDownLoader();
-                    StringBuilder content = contentDownLoader.contentDownloader(link);
-                    System.out.println("Content: " + content);
-                    /** Build content Property **/
-                    Property contentProperty = new Property(content, "analyzed");
-                    properties.setContent(contentProperty);
-                    MetaDataExtractor.PageAttributeHolder pageAttributeHolder =  m.extractMetaData(link);
-                    /** Build title property **/
-                    Property titleProperty = new Property(pageAttributeHolder.getTitle(), "analyzed");
-                    properties.setTitle(titleProperty);
-                    Property httpStatusCode = new Property(pageAttributeHolder.getStatusCode());
-                    properties.setHttpStatusCode(httpStatusCode);
+        Optional<ElasticDataHolder> st = Optional.ofNullable(searchTaskHolder);
+        String[] keywords;
 
-                    //TODO complete createAt
-                    Property createAtProperty = new Property(pageAttributeHolder.getLastModificationDate(), "epoch");
-                    properties.setCreateAt(createAtProperty);
-                    searchTask.setProperties(properties);
-                    holder.setSearchResult(searchTask);
-                    delegateToPersister(holder);
+        if(st.isPresent()) {
+            keywords = keywordExtractor.extractKeyWord(searchTaskHolder);
+
+            Optional<SearchTaskImpl> stOpt = Optional.ofNullable(searchTaskHolder.getSearchTask());
+            /**
+             * If searchTask is not present it will not be delegated to persistence layer
+             */
+            if(stOpt.isPresent()) {
+                SearchTaskImpl.Properties searchHolderProperties = searchTaskHolder.getSearchTask().getProperties();
+                Property taskNameProperty = searchHolderProperties.getTaskName();
+                try {
+                    for (int i = 0; i < keywords.length; i++) {
+                        List<String> links = gCrawler.getUrlsFromGoogleFromASearchTerm(keywords[i].trim());
+                        System.out.println("Total result returned: " + links.size());
+                        System.out.println("Keyword: " + keywords[i]);
+                        /** Build keyword property **/
+
+                        for (String link : links) {
+                            System.out.println();
+                            ElasticDataHolder holder = new ElasticDataHolder();
+                            SearchTaskImpl searchTask = new SearchTaskImpl();
+                            SearchTaskImpl.Properties properties = new SearchTaskImpl.Properties();
+                            properties.setTaskName(taskNameProperty);
+                            properties.setKeywords(new Property<>(keywords[i], "not_analyzed"));
+                            System.out.println("URL: " + link);
+
+                            UrlContentDownLoader contentDownLoader = new UrlContentDownLoader();
+
+                            MetaDataExtractor.PageAttributeHolder pageAttributeHolder = m.extractMetaData(link);
+                            /** build url property **/
+                            properties.setUrl(new Property<>(link, "analyzed"));
+                            /** Build title property **/
+                            Property<String> titleProperty = new Property<>(pageAttributeHolder.getTitle(), pageAttributeHolder.getTitle() != null ?"analyzed" : null);
+                            properties.setTitle(titleProperty);
+                            Property<String> httpStatusCode = new Property<>(pageAttributeHolder.getStatusCode()+"", "not_analyzed");
+                            properties.setHttpStatusCode(httpStatusCode);
+                            properties.setActive(new Property<>(true));
+
+
+                            //TODO complete createAt
+                            Property<String> createAtProperty = new Property<>(pageAttributeHolder.getLastModificationDate(), pageAttributeHolder.getLastModificationDate()!= null?"epoch":null);
+                            properties.setCreateAt(createAtProperty);
+                            searchTask.setProperties(properties);
+
+                            try {
+                                StringBuilder content = contentDownLoader.contentDownloader(link);
+                                System.out.println("Content: " + content);
+                                /** Build content Property **/
+                                Property<java.io.Serializable> contentProperty = new Property<>(content, content != null ?"analyzed": null);
+                                properties.setContent(contentProperty);
+                            }catch (MalformedURLException mfu ){
+                                String description = mfu.getMessage();
+                                properties.setError(new Property<>("MalformedURLException "+ description, "analyzed"));
+                                mfu.printStackTrace();
+                            }
+                            catch (FileNotFoundException e){
+                                String description = e.getMessage();
+                                properties.setError(new Property<>("FileNotFoundException "+ description,"analyzed"));
+                                e.printStackTrace();
+                            }
+                            catch(IOException io){
+                                String description = io.getMessage();
+                                properties.setError(new Property<>("IOException "+ description,"analyzed"));
+                                io.printStackTrace();
+                            }
+
+                            holder.setSearchResult(searchTask);
+                            holder.setSearchTask(searchTaskHolder.getSearchTask());
+                            delegateToPersister(holder);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
             }
-        }catch(Exception e){
-            e.printStackTrace();
         }
     }
 

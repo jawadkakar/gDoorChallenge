@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class UrlContentDownLoader {
 
-    public StringBuilder contentDownloader(String url) {
+    public StringBuilder contentDownloader(String url) throws MalformedURLException, FileNotFoundException,IOException {
         StringBuilder content = new StringBuilder();
         URL u;
         InputStream is = null;
@@ -26,7 +26,7 @@ public class UrlContentDownLoader {
             }
 
 
-        } catch (MalformedURLException mue) {
+        }/* catch (MalformedURLException mue) {
 
             System.out.println("Ouch - a MalformedURLException happened.");
             mue.printStackTrace();
@@ -34,11 +34,11 @@ public class UrlContentDownLoader {
             System.out.println("Oops- an FileNotFoundException happened.");
             e.printStackTrace();
         }
-        catch (Exception e) {
+        catch (IOException e) {
 
             System.out.println("Oops- an Exception happened.");
             e.printStackTrace();
-        } finally {
+        } */finally {
             try {
                 Optional<InputStream> input = Optional.ofNullable(is);
                 if (input.isPresent()) {

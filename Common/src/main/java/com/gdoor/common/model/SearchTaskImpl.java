@@ -39,6 +39,8 @@ public class SearchTaskImpl  {
         private Property title;
         private Property httpStatusCode;
         private Property content;
+        private Property error;
+        private Property url;
 
         public Properties() {
 
@@ -71,6 +73,22 @@ public class SearchTaskImpl  {
         public int hashCode() {
 
             return Objects.hash(taskName, keywords, createAt, active, title, httpStatusCode, content);
+        }
+
+        public Property getUrl() {
+            return url;
+        }
+
+        public void setUrl(Property url) {
+            this.url = url;
+        }
+
+        public Property getError() {
+            return error;
+        }
+
+        public void setError(Property error) {
+            this.error = error;
         }
 
         public Property getTaskName() {

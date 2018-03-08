@@ -1,6 +1,7 @@
 package com.gdoor.crawler.elastic;
 
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * This class extract meta data for a given url
@@ -29,13 +31,15 @@ public class MetaDataExtractor {
     }
 
     //TODO change my name after creating an object which takes attributes in.
+
     public PageAttributeHolder extractMetaData(String forAGivenUrl) {
         PageAttributeHolder holder = null;
+        Connection.Response re = null;
         try {
             holder = new PageAttributeHolder();
             MetaDataExtractor m = new MetaDataExtractor();
 
-            Connection.Response re = Jsoup.connect(forAGivenUrl).execute();
+            re = Jsoup.connect(forAGivenUrl).execute();
             holder.setStatusCode(re.statusCode());
             Document doc =re.parse();
 
@@ -83,7 +87,12 @@ public class MetaDataExtractor {
             System.out.println("Site Name: " + siteName);
             System.out.printf("Status Code: "+holder.getStatusCode());
             System.out.println();
-        } catch (Exception e) {
+        }catch (HttpStatusException e){
+            holder.setStatusCode(e.getStatusCode());
+            holder.setUrl(e.getUrl());
+            holder.setDescription(e.getMessage());
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return holder;
