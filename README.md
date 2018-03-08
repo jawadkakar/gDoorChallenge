@@ -5,7 +5,7 @@
 git clone https://github.com/jawadkakar/gDoorChallenge.git
 # 2: navigate to the folder where code was downloaded
 cd gDoorChallenge
-# 3: build the code using maven
+# 3: build the code using maven or if you just want to run it go to step 4. 
 mvn clean install
 # 4: When the project is successfully build 
  cd executabl
