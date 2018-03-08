@@ -17,10 +17,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import com.google.common.base.Stopwatch;
 
 public class GdoorCrawler implements Crawler {
 
-    ExecutorService executor = Executors.newFixedThreadPool(10);
+    ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     @Override
     public void crawl(ElasticDataHolder searchTaskHolder) {
@@ -28,7 +29,8 @@ public class GdoorCrawler implements Crawler {
         Optional<ElasticDataHolder> st = Optional.ofNullable(searchTaskHolder);
         String[] keywords;
         /** add executor services in here **/
-
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+        Stopwatch stopwatch = Stopwatch.createStarted();
         if (st.isPresent()) {
             keywords = keywordExtractor.extractKeyWord(searchTaskHolder);
 
@@ -47,16 +49,23 @@ public class GdoorCrawler implements Crawler {
                     }
 
 
-                    hardWorkingCrawler(searchTaskHolder, keywords[i], taskNameProperty, isFirstRun);
+                    ContentDownLoader downLoader = new ContentDownLoader(searchTaskHolder, keywords[i], taskNameProperty, isFirstRun);
+                    executor.execute(downLoader);
+
 
                 }
             }
+
         }
+        executor.shutdown();
+        stopwatch.stop();
+        System.out.println("**************************************************Time took to execute the query : " + stopwatch+"  **************************************************");
     }
 
     /**
      * This method does all the hard work, for each keyword it calls google to get the links
      * and for each link it downloads the content, etc.
+     *
      * @param searchTaskHolder
      * @param keyword
      * @param taskNameProperty

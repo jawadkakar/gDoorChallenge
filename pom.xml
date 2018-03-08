@@ -53,6 +53,11 @@
             <artifactId>boon</artifactId>
             <version>${fastjson.boon.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${google.guava.version}</version>
+        </dependency>
     </dependencies>
 
     <properties>
