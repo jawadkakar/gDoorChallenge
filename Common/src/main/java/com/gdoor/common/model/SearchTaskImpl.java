@@ -3,7 +3,7 @@ package com.gdoor.common.model;
 
 import java.util.Objects;
 
-public class SearchTaskImpl implements SearchTask {
+public class SearchTaskImpl  {
     private Properties properties;
 
     public SearchTaskImpl() {
