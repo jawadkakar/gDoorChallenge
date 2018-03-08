@@ -6,21 +6,32 @@ public class ElasticDataHolder {
 
     private SearchTaskImpl searchTask;
     private SearchTaskImpl searchResult;
+    private boolean isFirstRun;
 
 
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ElasticDataHolder that = (ElasticDataHolder) o;
-        return Objects.equals(searchResult, that.searchResult) &&
-                Objects.equals(searchTask, that.searchTask);
+        return isFirstRun == that.isFirstRun &&
+                Objects.equals(searchTask, that.searchTask) &&
+                Objects.equals(searchResult, that.searchResult);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(searchResult, searchTask);
+        return Objects.hash(searchTask, searchResult, isFirstRun);
+    }
+
+    public SearchTaskImpl getSearchTask() {
+        return searchTask;
+    }
+
+    public void setSearchTask(SearchTaskImpl searchTask) {
+        this.searchTask = searchTask;
     }
 
     public SearchTaskImpl getSearchResult() {
@@ -31,11 +42,11 @@ public class ElasticDataHolder {
         this.searchResult = searchResult;
     }
 
-    public SearchTaskImpl getSearchTask() {
-        return searchTask;
+    public boolean isFirstRun() {
+        return isFirstRun;
     }
 
-    public void setSearchTask(SearchTaskImpl searchTask) {
-        this.searchTask = searchTask;
+    public void setFirstRun(boolean firstRun) {
+        isFirstRun = firstRun;
     }
 }

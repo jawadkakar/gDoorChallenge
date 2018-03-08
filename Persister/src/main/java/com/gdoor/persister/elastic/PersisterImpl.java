@@ -26,16 +26,40 @@ public class PersisterImpl implements Persister {
         this.client = getClient();
     }
 
+    /**
+     * if(Optional.ofNullable(jsonString).isPresent() && jsonString.length() > 0) {
+          IndexResponse response = client.prepareIndex("gdoor", "SearchTask").setSource(jsonString, XContentType.JSON).get();
+          System.out.println(response.toString());
+       }
+     * @param taskHolder
+     */
     @Override
     public void persist(ElasticDataHolder taskHolder) {
         ObjectMapper mapper = JsonFactory.create();
-        String jsonString = mapper.toJson(taskHolder);
-        if(Optional.ofNullable(jsonString).isPresent() && jsonString.length() > 0) {
-            IndexResponse response = client.prepareIndex("gdoor", "SearchTask").setSource(jsonString, XContentType.JSON).get();
+        if (taskHolder.isFirstRun()) {
+            persistSearchTask(taskHolder, mapper);
+            persistSearchResult(taskHolder, mapper);
+        } else {
+            persistSearchResult(taskHolder, mapper);
+        }
+    }
+
+    private void persistSearchTask(ElasticDataHolder taskHolder, ObjectMapper mapper) {
+
+        String searchTaskJson = mapper.toJson(taskHolder.getSearchTask());
+        if (Optional.ofNullable(searchTaskJson).isPresent() && searchTaskJson.length() > 0) {
+            IndexResponse response = client.prepareIndex("lookingsearch", "searchTask").setSource(searchTaskJson, XContentType.JSON).get();
             System.out.println(response.toString());
         }
-        // add another if statement for SearchTaskHolder
 
+    }
+
+    private void persistSearchResult(ElasticDataHolder taskHolder, ObjectMapper mapper) {
+        String searchResultJson = mapper.toJson(taskHolder.getSearchResult());
+        if (Optional.ofNullable(searchResultJson).isPresent() && searchResultJson.length() > 0) {
+            IndexResponse response = client.prepareIndex("lookingresult", "searchResult").setSource(searchResultJson, XContentType.JSON).get();
+            System.out.println(response.toString());
+        }
     }
 
     private static Client getClient() throws UnknownHostException {
@@ -48,11 +72,12 @@ public class PersisterImpl implements Persister {
 
     /**
      * To view the index for a given id
+     *
      * @return
      */
     private Map<String, Object> view(String id) {
         GetResponse getResponse = client.prepareGet("gdoor", "SearchTask", id).get();
-       // System.out.println(getResponse.getSource().toString());
+        // System.out.println(getResponse.getSource().toString());
         return getResponse.getSource();
 
 
@@ -61,7 +86,7 @@ public class PersisterImpl implements Persister {
     public static void main(String[] args) throws UnknownHostException {
         PersisterImpl impl = new PersisterImpl();
         impl.persist(null);
-        Client client =null;
+        Client client = null;
         try {
             client = getClient();
             SearchResponse response = client.prepareSearch().get();

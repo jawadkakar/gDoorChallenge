@@ -94,6 +94,9 @@ public class GdoorCrawler implements Crawler {
 
                             holder.setSearchResult(searchTask);
                             holder.setSearchTask(searchTaskHolder.getSearchTask());
+                            if(i == 0){
+                                holder.setFirstRun(true);
+                            }
                             delegateToPersister(holder);
                         }
                     }
