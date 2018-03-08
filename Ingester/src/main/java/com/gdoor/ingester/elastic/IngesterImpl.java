@@ -75,7 +75,7 @@ public class IngesterImpl implements Ingester {
         long dateInSecond = 0;
         Optional<String> date = Optional.ofNullable(dataStore.getDate());
         if (date.isPresent()) {
-            dateInSecond = convertDateStringInSeconds(dataStore.getDate());
+            dateInSecond = convertDateStringToSeconds(dataStore.getDate());
         }
 
         SearchTaskImpl.Property createdAt = new SearchTaskImpl.Property(dateInSecond);
@@ -93,7 +93,7 @@ public class IngesterImpl implements Ingester {
         return holder;
     }
 
-    private long convertDateStringInSeconds(String inputDate) {
+    private long convertDateStringToSeconds(String inputDate) {
         long dateInSecond = 0;
         Optional<String> date = Optional.ofNullable(inputDate);
         try {
