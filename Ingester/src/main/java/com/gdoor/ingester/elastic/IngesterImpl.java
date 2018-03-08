@@ -93,26 +93,6 @@ public class IngesterImpl implements Ingester {
         return holder;
     }
 
-   /* @Deprecated
-    private static void jsonCreatorForExample() {
-        SearchTaskHolder searchTask = new SearchTaskHolder();
-        SearchTaskImpl task = new SearchTaskImpl();
-
-        Property taskName = new Property("myTask", "not_analyzed");
-        Property keyWords = new Property("Glass door, Software", "not_analyzed");
-        Property createdAt = new Property(new Date().getTime());
-        createdAt.setFormat("epoch_millis");
-        Property active = new Property(false);
-
-        Properties properties = new Properties(taskName, keyWords, createdAt, active, null, null);
-
-        task.setProperties(properties);
-        searchTask.setSearchTask(task);
-
-        ObjectMapper mapper = JsonFactory.create();
-        String jsonString = mapper.toJson(searchTask);
-        System.out.println(jsonString);
-    }*/
     private long convertDateStringInSeconds(String inputDate) {
         long dateInSecond = 0;
         Optional<String> date = Optional.ofNullable(inputDate);
@@ -134,7 +114,6 @@ public class IngesterImpl implements Ingester {
     }
 
     public static void main(String[] args) {
-        //jsonCreatorForExample();
         DataStore dataStore = new DataStore();
         dataStore.setTaskName("GoldenHorn");
         dataStore.setDate("10/03/2018");
