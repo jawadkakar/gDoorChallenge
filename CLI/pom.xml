@@ -42,13 +42,14 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
+                            <finalName>lookingGlass</finalName>
                             <outputDirectory>../executable</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
-       
+
     </build>
     <packaging>jar</packaging>
 
