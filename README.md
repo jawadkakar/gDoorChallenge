@@ -12,5 +12,11 @@ mvn clean install
 # 5: Start Elastic Search
 # 6: Run gDoorChallenge by typing the following, make user path for the datafile is correct. 
  java -jar lookingGlass-jar-with-dependencies.jar -f /gDoorChallenge/SearchTask.yaml
+ 
+ 
+ I have created 2 indices and 2 types
+ lookingsearch/searchTask
+ lookingresult/searchResult
+ 
 
 
