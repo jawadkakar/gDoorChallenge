@@ -50,7 +50,8 @@ public class GdoorCrawler implements Crawler {
 
                     String query = keywords[i].trim().replaceAll("\\s+","&");
                     ContentDownLoader downLoader = new ContentDownLoader(searchTaskHolder, query, taskNameProperty, isFirstRun);
-                    executor.execute(downLoader);
+                   // executor.execute(downLoader);
+                    executor.submit(downLoader);
 
 
                 }
