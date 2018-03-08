@@ -27,17 +27,12 @@
     <dependencies>
         <dependency>
             <groupId>gdoor</groupId>
-            <artifactId>gdoor.elastic.search.common</artifactId>
+            <artifactId>gdoor.code.challenge.common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>gdoor</groupId>
-            <artifactId>gdoor.elastic.search.common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>gdoor</groupId>
-            <artifactId>gdoor.elastic.search.crawler</artifactId>
+            <artifactId>gdoor.code.challenge.crawler</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -54,6 +49,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons.lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>gdoor</groupId>
+            <artifactId>gdoor.code.challenge.common</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

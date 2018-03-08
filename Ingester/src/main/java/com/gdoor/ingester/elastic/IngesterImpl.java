@@ -1,6 +1,8 @@
 package com.gdoor.ingester.elastic;
 
-import com.gdoor.common.model.*;
+
+import com.gdoor.common.model.ElasticDataHolder;
+import com.gdoor.common.model.SearchTaskImpl;
 import com.gdoor.crawler.module.Crawler;
 import com.gdoor.crawler.module.CrawlerModule;
 import com.gdoor.ingester.model.DataStore;
@@ -17,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
-import java.util.Date;
 import java.util.Optional;
 
 
@@ -54,7 +55,7 @@ public class IngesterImpl implements Ingester {
     private void delegateToCrawler(DataStore dataStore)  {
         Injector crawlerInjector = Guice.createInjector(new CrawlerModule());
         Crawler crawler = crawlerInjector.getInstance(Crawler.class);
-        SearchTaskHolder searchTaskHolder = searchTaskBuilder(dataStore);
+        ElasticDataHolder searchTaskHolder = searchTaskBuilder(dataStore);
         crawler.crawl(searchTaskHolder);
     }
 
@@ -64,12 +65,12 @@ public class IngesterImpl implements Ingester {
      * @param dataStore all the keywords in the file.
      * @return SearchTask which is build from the input parameter.
      */
-    private SearchTaskHolder searchTaskBuilder(DataStore dataStore) {
-        SearchTaskHolder searchTask = new SearchTaskHolder();
+    private ElasticDataHolder searchTaskBuilder(DataStore dataStore) {
+        ElasticDataHolder holder = new ElasticDataHolder();
         SearchTaskImpl task = new SearchTaskImpl();
-
-        Property taskName = new Property(dataStore.getTaskName(), "not_analyzed");
-        Property keyWords = new Property(dataStore.getKeywords(), "not_analyzed");
+        holder.setSearchTask(task);
+        SearchTaskImpl.Property taskName = new SearchTaskImpl.Property(dataStore.getTaskName(), "not_analyzed");
+        SearchTaskImpl.Property keyWords = new SearchTaskImpl.Property(dataStore.getKeywords(), "not_analyzed");
 
         long dateInSecond = 0;
         Optional<String> date = Optional.ofNullable(dataStore.getDate());
@@ -77,22 +78,22 @@ public class IngesterImpl implements Ingester {
             dateInSecond = convertDateStringInSeconds(dataStore.getDate());
         }
 
-        Property createdAt = new Property(dateInSecond);
+        SearchTaskImpl.Property createdAt = new SearchTaskImpl.Property(dateInSecond);
         createdAt.setFormat("epoch_millis");
-        Property active = new Property(false);
+        SearchTaskImpl.Property active = new SearchTaskImpl.Property(false);
 
-        Properties properties = new Properties(taskName, keyWords, createdAt, active, null, null);
+        SearchTaskImpl.Properties properties = new SearchTaskImpl.Properties(taskName, keyWords, createdAt, active, null, null);
 
         task.setProperties(properties);
-        searchTask.setSearchTask(task);
+        holder.setSearchTask(task);
 
         ObjectMapper mapper = JsonFactory.create();
-        String jsonString = mapper.toJson(searchTask);
+        String jsonString = mapper.toJson(holder);
         System.out.println(jsonString);
-        return searchTask;
+        return holder;
     }
 
-    @Deprecated
+   /* @Deprecated
     private static void jsonCreatorForExample() {
         SearchTaskHolder searchTask = new SearchTaskHolder();
         SearchTaskImpl task = new SearchTaskImpl();
@@ -111,7 +112,7 @@ public class IngesterImpl implements Ingester {
         ObjectMapper mapper = JsonFactory.create();
         String jsonString = mapper.toJson(searchTask);
         System.out.println(jsonString);
-    }
+    }*/
     private long convertDateStringInSeconds(String inputDate) {
         long dateInSecond = 0;
         Optional<String> date = Optional.ofNullable(inputDate);

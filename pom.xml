@@ -69,13 +69,13 @@
         <tika.core.version>1.16</tika.core.version>
         <google.guice.version>4.1.0</google.guice.version>
         <fastjson.boon.version>0.23</fastjson.boon.version>
-        <jackson.dataformat.yaml>2.9.4</jackson.dataformat.yaml>
+        <jackson.dataformat.yaml.version>2.9.4</jackson.dataformat.yaml.version>
         <hibernate-core.version>5.2.12.Final</hibernate-core.version>
         <mssql-jdbc.version>6.2.1.jre8</mssql-jdbc.version>
         <h2.version>1.4.196</h2.version>
         <janusgraph.version>0.2.0</janusgraph.version>
         <commons-cli.version>1.4</commons-cli.version>
-        <commons.lang3>3.7</commons.lang3>
+        <commons.lang3.version>3.7</commons.lang3.version>
         <commons.httpclient.version>3.1</commons.httpclient.version>
         <jsoup.version>1.11.2</jsoup.version>
         <elasticsearch.version>6.2.2</elasticsearch.version>
