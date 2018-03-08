@@ -13,6 +13,7 @@
         <module>Ingester</module>
         <module>Common</module>
         <module>Crawler</module>
+        <module>Persister</module>
     </modules>
     <name>GlassDoorCodeChallenge</name>
     <build>
