@@ -48,8 +48,8 @@ public class GdoorCrawler implements Crawler {
                         isFirstRun = true;
                     }
 
-
-                    ContentDownLoader downLoader = new ContentDownLoader(searchTaskHolder, keywords[i], taskNameProperty, isFirstRun);
+                    String query = keywords[i].trim().replaceAll("\\s+","&");
+                    ContentDownLoader downLoader = new ContentDownLoader(searchTaskHolder, query, taskNameProperty, isFirstRun);
                     executor.execute(downLoader);
 
 
@@ -58,8 +58,7 @@ public class GdoorCrawler implements Crawler {
 
         }
         executor.shutdown();
-        stopwatch.stop();
-        System.out.println("**************************************************Time took to execute the query : " + stopwatch+"  **************************************************");
+
     }
 
     /**
@@ -143,12 +142,7 @@ public class GdoorCrawler implements Crawler {
     }
 
     public static void main(String[] args) {
-        GdoorCrawler gdoor = new GdoorCrawler();
-        try {
-            gdoor.crawl(null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("Jawad       Kakar".replaceAll("\\s+","&"));
 
     }
 }
