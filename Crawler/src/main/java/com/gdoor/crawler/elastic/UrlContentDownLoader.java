@@ -62,10 +62,10 @@ public class UrlContentDownLoader {
         return Jsoup.parse(html).text();
     }
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         UrlContentDownLoader contentDownLoader = new UrlContentDownLoader();
         StringBuilder content = contentDownLoader.contentDownloader("https://en.wikipedia.org/wiki/Afghanistan");
         System.out.println(content);
-    }
+    }*/
 
 }

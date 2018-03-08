@@ -44,7 +44,7 @@ public class GdoorCrawler implements Crawler {
                     /** Build title property **/
                     Property titleProperty = new Property(pageAttributeHolder.getTitle(), "analyzed");
                     properties.setTitle(titleProperty);
-                    Property httpStatusCode = new Property("whatever");
+                    Property httpStatusCode = new Property(pageAttributeHolder.getStatusCode());
                     properties.setHttpStatusCode(httpStatusCode);
 
                     //TODO complete createAt

@@ -1,5 +1,6 @@
 package com.gdoor.crawler.elastic;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,7 +34,12 @@ public class MetaDataExtractor {
         try {
             holder = new PageAttributeHolder();
             MetaDataExtractor m = new MetaDataExtractor();
-            Document doc = Jsoup.connect(forAGivenUrl).get();
+
+            Connection.Response re = Jsoup.connect(forAGivenUrl).execute();
+            holder.setStatusCode(re.statusCode());
+            Document doc =re.parse();
+
+            //Document doc = Jsoup.connect(forAGivenUrl).get();
             String description = m.getMetaTag(doc, "description");
             holder.setDescription(description);
             if (description == null) {
@@ -75,6 +81,8 @@ public class MetaDataExtractor {
             System.out.println("Twitter Title: " + twitterTitle);
             System.out.println("Twitter Description: " + twitterDescription);
             System.out.println("Site Name: " + siteName);
+            System.out.printf("Status Code: "+holder.getStatusCode());
+            System.out.println();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,6 +127,8 @@ public class MetaDataExtractor {
         private String twitterDescription;
         private String siteName;
         private String lastModificationDate;
+        private int statusCode;
+
 
         @Override
         public boolean equals(Object o) {
@@ -132,13 +142,22 @@ public class MetaDataExtractor {
                     Objects.equals(twitterTitle, that.twitterTitle) &&
                     Objects.equals(twitterDescription, that.twitterDescription) &&
                     Objects.equals(siteName, that.siteName) &&
-                    Objects.equals(lastModificationDate, that.lastModificationDate);
+                    Objects.equals(lastModificationDate, that.lastModificationDate) &&
+                    Objects.equals(statusCode, that.statusCode);
         }
 
         @Override
         public int hashCode() {
 
-            return Objects.hash(title, description, publishedDate, url, twitterTitle, twitterDescription, siteName, lastModificationDate);
+            return Objects.hash(title, description, publishedDate, url, twitterTitle, twitterDescription, siteName, lastModificationDate, statusCode);
+        }
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        public void setStatusCode(int statusCode) {
+            this.statusCode = statusCode;
         }
 
         public String getLastModificationDate() {
