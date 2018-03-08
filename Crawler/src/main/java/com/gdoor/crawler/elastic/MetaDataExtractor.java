@@ -28,87 +28,89 @@ public class MetaDataExtractor {
     }
 
     //TODO change my name after creating an object which takes attributes in.
-    public PageAttributeHolder extractMetaData(String forAGivenUrl) throws IOException {
-        PageAttributeHolder holder = new PageAttributeHolder();
-        MetaDataExtractor m = new MetaDataExtractor();
-        Document doc = Jsoup.connect(forAGivenUrl).get();
-        String description = m.getMetaTag(doc, "description");
-        holder.setDescription(description);
-        if (description == null) {
-            description = m.getMetaTag(doc, "og:description");
+    public PageAttributeHolder extractMetaData(String forAGivenUrl) {
+        PageAttributeHolder holder = null;
+        try {
+            holder = new PageAttributeHolder();
+            MetaDataExtractor m = new MetaDataExtractor();
+            Document doc = Jsoup.connect(forAGivenUrl).get();
+            String description = m.getMetaTag(doc, "description");
             holder.setDescription(description);
-        }
-        String pubDate = m.getMetaTag(doc, "pubdate");
-        holder.setPublishedDate(pubDate);
-        if(pubDate == null){
-            pubDate = m.getMetaTag(doc, "og:pubdate");
+            if (description == null) {
+                description = m.getMetaTag(doc, "og:description");
+                holder.setDescription(description);
+            }
+            String pubDate = m.getMetaTag(doc, "pubdate");
             holder.setPublishedDate(pubDate);
-        }
-        String lastModificationDate = m.getMetaTag(doc, "lastmod");
-        holder.setLastModificationDate(lastModificationDate);
-        if(lastModificationDate == null){
-            lastModificationDate = m.getMetaTag(doc, "og:lastmod");
+            if (pubDate == null) {
+                pubDate = m.getMetaTag(doc, "og:pubdate");
+                holder.setPublishedDate(pubDate);
+            }
+            String lastModificationDate = m.getMetaTag(doc, "lastmod");
             holder.setLastModificationDate(lastModificationDate);
-        }
-        String url = getMetaTag(doc, "url");
-        holder.setUrl(url);
-        if(url == null){
-            url = getMetaTag(doc, "og:url");
+            if (lastModificationDate == null) {
+                lastModificationDate = m.getMetaTag(doc, "og:lastmod");
+                holder.setLastModificationDate(lastModificationDate);
+            }
+            String url = getMetaTag(doc, "url");
             holder.setUrl(url);
+            if (url == null) {
+                url = getMetaTag(doc, "og:url");
+                holder.setUrl(url);
+            }
+            String title = getMetaTag(doc, "og:title");
+            holder.setTitle(title);
+            String twitterTitle = getMetaTag(doc, "twitter:title");
+            holder.setTwitterTitle(twitterTitle);
+            String twitterDescription = getMetaTag(doc, "twitter:description");
+            holder.setTwitterDescription(twitterDescription);
+            String siteName = getMetaTag(doc, "og:site_name");
+            holder.setSiteName(siteName);
+            // and others you need to
+            System.out.println("Description: " + description);
+            System.out.println("Published Date:  " + pubDate);
+            System.out.println("Last Modification Date: " + lastModificationDate);
+            System.out.println("URL: " + url);
+            System.out.println("Title: " + title);
+            System.out.println("Twitter Title: " + twitterTitle);
+            System.out.println("Twitter Description: " + twitterDescription);
+            System.out.println("Site Name: " + siteName);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        String title = getMetaTag(doc, "og:title");
-        holder.setTitle(title);
-        String twitterTitle = getMetaTag(doc, "twitter:title");
-        holder.setTwitterTitle(twitterTitle);
-        String twitterDescription = getMetaTag(doc, "twitter:description");
-        holder.setTwitterDescription(twitterDescription);
-        String siteName = getMetaTag(doc, "og:site_name");
-        holder.setSiteName(siteName);
-        // and others you need to
-        System.out.println("Description: " + description);
-        System.out.println("Published Date:  " + pubDate);
-        System.out.println("Last Modification Date: "+ lastModificationDate);
-        System.out.println("URL: "+ url);
-        System.out.println("Title: "+title);
-        System.out.println("Twitter Title: "+twitterTitle);
-        System.out.println("Twitter Description: "+ twitterDescription);
-        System.out.println("Site Name: "+ siteName);
-        /*foo(doc);
-        powerfullOne();*/
         return holder;
     }
 
     void powerfullOne() throws IOException {
         Document doc = Jsoup.connect("http://www.cnn.com/").get();
-        for(Element meta : doc.select("meta")) {
+        for (Element meta : doc.select("meta")) {
             System.out.println("Name: " + meta.attr("name") + " - Content: " + meta.attr("content"));
         }
     }
 
 
-
-    static void foo(Document doc){
+    static void foo(Document doc) {
         Elements metaTags = doc.getElementsByTag("meta");
 
         for (Element metaTag : metaTags) {
             String content = metaTag.attr("content");
             String name = metaTag.attr("name");
 
-            if("d.title".equals(name)) {
+            if ("d.title".equals(name)) {
                 System.out.println(content);
             }
-            if("d.description".equals(name)) {
-               // ex.setDescription(content);
+            if ("d.description".equals(name)) {
+                // ex.setDescription(content);
                 System.out.println(content);
             }
-            if("d.language".equals(name)) {
-              //  ex.setLanguage(content);
+            if ("d.language".equals(name)) {
+                //  ex.setLanguage(content);
                 System.out.println(content);
             }
         }
     }
 
-    protected static class PageAttributeHolder{
+    protected static class PageAttributeHolder {
         private String title;
         private String description;
         private String publishedDate;

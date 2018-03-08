@@ -1,9 +1,9 @@
 package com.gdoor.cli;
 
-/*import com.gdoor.ingester.module.Ingester;
+import com.gdoor.ingester.module.Ingester;
 import com.gdoor.ingester.module.IngesterModule;
 import com.google.inject.Guice;
-import com.google.inject.Injector;*/
+import com.google.inject.Injector;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 
@@ -11,11 +11,11 @@ import static com.gdoor.cli.Cli.*;
 
 public class Runner {
 
-   /* private static void delegateToIngester(String fileName) {
+    private static void delegateToIngester(String fileName) {
         Injector ingesterInjector = Guice.createInjector(new IngesterModule());
         Ingester ingester = ingesterInjector.getInstance(Ingester.class);
         ingester.ingest(fileName);
-    }*/
+    }
 
 
     public static void main(String[] args) {
@@ -31,7 +31,7 @@ public class Runner {
             fileName = commandLine.getOptionValue(getFileOption());
 
         }
-        //delegateToIngester(fileName);
+        delegateToIngester(fileName);
     }
 
 

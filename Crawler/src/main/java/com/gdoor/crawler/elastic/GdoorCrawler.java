@@ -24,8 +24,9 @@ public class GdoorCrawler implements Crawler {
         Property taskNameProperty = searchHolderProperties.getTaskName();
         try {
             for (int i = 0; i < keywords.length; i++) {
-                List<String> links = gCrawler.getUrlsFromGoogleFromASearchTerm(keywords[i]);
+                List<String> links = gCrawler.getUrlsFromGoogleFromASearchTerm(keywords[i].trim());
                 System.out.println("Total result returned: " + links.size());
+                System.out.println("Keyword: "+keywords[i]);
                 for (String link : links) {
                     System.out.println();
                     ElasticDataHolder holder = new ElasticDataHolder();
