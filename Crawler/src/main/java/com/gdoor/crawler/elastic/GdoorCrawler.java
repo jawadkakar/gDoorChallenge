@@ -6,6 +6,8 @@ import com.gdoor.common.model.SearchTaskImpl.Property;
 import com.gdoor.crawler.module.Crawler;
 import com.gdoor.crawler.util.KeywordExtractor;
 
+import com.gdoor.persister.module.Persister;
+import com.gdoor.persister.module.PersisterModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -52,7 +54,7 @@ public class GdoorCrawler implements Crawler {
                     properties.setCreateAt(createAtProperty);
                     searchTask.setProperties(properties);
                     holder.setSearchResult(searchTask);
-                    //delegateToPersister(holder);
+                    delegateToPersister(holder);
                 }
             }
         }catch(Exception e){
@@ -62,13 +64,11 @@ public class GdoorCrawler implements Crawler {
 
 
 
-/*
     private void delegateToPersister(ElasticDataHolder taskHolder)  {
         Injector persisterInjector = Guice.createInjector(new PersisterModule());
         Persister persister = persisterInjector.getInstance(Persister.class);
         persister.persist(taskHolder);
     }
-*/
 
     public static void main(String[] args) {
         GdoorCrawler gdoor = new GdoorCrawler();

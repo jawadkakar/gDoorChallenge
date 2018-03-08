@@ -27,6 +27,11 @@
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
         </dependency>
+        <dependency>
+            <groupId>gdoor</groupId>
+            <artifactId>gdoor.code.challenge.persister</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
