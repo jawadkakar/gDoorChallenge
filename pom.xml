@@ -12,6 +12,7 @@
         <module>CLI</module>
         <module>Ingester</module>
         <module>Common</module>
+        <module>Crawler</module>
     </modules>
     <name>GlassDoorCodeChallenge</name>
     <build>
@@ -27,12 +28,58 @@
         </plugins>
     </build>
 
-    <properties>
-        <commons-cli.version>1.4</commons-cli.version>
-        <jackson.dataformat.yaml.version>2.9.4</jackson.dataformat.yaml.version>
-        <commons.lang3.version>3.7</commons.lang3.version>
-    </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>${spoke.core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy.all.verion}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${google.guice.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.fastjson</groupId>
+            <artifactId>boon</artifactId>
+            <version>${fastjson.boon.version}</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <jersey.version>2.26</jersey.version>
+        <guice.version>4.1.0</guice.version>
+        <junit.version>3.8.1</junit.version>
+        <google.guava.version>23.4-jre</google.guava.version>
+        <javax.servlet.api.version>4.0.0</javax.servlet.api.version>
+        <log4j.version>1.2.17</log4j.version>
+        <spoke.core.version>1.0-groovy-2.4</spoke.core.version>
+        <groovy.all.verion>2.4.12</groovy.all.verion>
+        <lucene.core.version>7.1.0</lucene.core.version>
+        <tika.core.version>1.16</tika.core.version>
+        <google.guice.version>4.1.0</google.guice.version>
+        <fastjson.boon.version>0.23</fastjson.boon.version>
+        <jackson.dataformat.yaml>2.9.4</jackson.dataformat.yaml>
+        <hibernate-core.version>5.2.12.Final</hibernate-core.version>
+        <mssql-jdbc.version>6.2.1.jre8</mssql-jdbc.version>
+        <h2.version>1.4.196</h2.version>
+        <janusgraph.version>0.2.0</janusgraph.version>
+        <commons-cli.version>1.4</commons-cli.version>
+        <commons.lang3>3.7</commons.lang3>
+        <commons.httpclient.version>3.1</commons.httpclient.version>
+        <jsoup.version>1.11.2</jsoup.version>
+        <elasticsearch.version>6.2.2</elasticsearch.version>
+    </properties>
 
 
 </project>
