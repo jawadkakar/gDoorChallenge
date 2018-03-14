@@ -69,8 +69,8 @@ public class IngesterImpl implements Ingester {
         ElasticDataHolder holder = new ElasticDataHolder();
         SearchTaskImpl task = new SearchTaskImpl();
         holder.setSearchTask(task);
-        SearchTaskImpl.Property taskName = new SearchTaskImpl.Property(dataStore.getTaskName(), "not_analyzed");
-        SearchTaskImpl.Property keyWords = new SearchTaskImpl.Property(dataStore.getKeywords(), "not_analyzed");
+        SearchTaskImpl.Property<String> taskName = new SearchTaskImpl.Property<>(dataStore.getTaskName(), "not_analyzed");
+        SearchTaskImpl.Property<String> keyWords = new SearchTaskImpl.Property<>(dataStore.getKeywords(), "not_analyzed");
 
         long dateInSecond = 0;
         Optional<String> date = Optional.ofNullable(dataStore.getDate());
@@ -78,9 +78,9 @@ public class IngesterImpl implements Ingester {
             dateInSecond = convertDateStringToSeconds(dataStore.getDate());
         }
 
-        SearchTaskImpl.Property createdAt = new SearchTaskImpl.Property(dateInSecond);
+        SearchTaskImpl.Property<java.io.Serializable> createdAt = new SearchTaskImpl.Property<>(dateInSecond);
         createdAt.setFormat("epoch_millis");
-        SearchTaskImpl.Property active = new SearchTaskImpl.Property(false);
+        SearchTaskImpl.Property<Boolean> active = new SearchTaskImpl.Property<>(false);
 
         SearchTaskImpl.Properties properties = new SearchTaskImpl.Properties(taskName, keyWords, createdAt, active, null, null);
 

@@ -96,27 +96,12 @@ public class GoogleCrawler {
     }
 
 
-    public List<String> getUrlsFromGoogleFromASearchTerm(String searchTerm) throws Exception {
+    public List<String> getUrlsFromGoogleForASearchTerm(String searchTerm) throws Exception {
         //TODO extract it in config file.
         String query = "https://www.google.com/search?q="+ searchTerm + "&num=12&as_qdr=all";
         String page = getSearchContent(query);
         List<String> links = parseLinks(page);
         return links;
     }
-    public static void main(String[] args) throws Exception {
-        String searchTerm = "Afghanistan";
-        System.out.println("Google Search Parser Tutorial");
-        System.out.println("Searching for: " + searchTerm);
-        /*//String query = "https://www.google.com/search?q=" + searchTerm + "&num=10";
-        String query = "https://www.google.com/search?q="+ searchTerm + "&num=12&as_qdr=all";
-        String page = getSearchContent(query);
-        List<String> links = parseLinks(page);*/
-        System.out.println();
-        GoogleCrawler googleCrawler = new GoogleCrawler();
-        List<String> links = googleCrawler.getUrlsFromGoogleFromASearchTerm("Afghanistan");
-        System.out.println("Results:");
-        for (int i = 0; i < links.size(); i++) {
-            System.out.println(links.get(i));
-        }
-    }
+
 }

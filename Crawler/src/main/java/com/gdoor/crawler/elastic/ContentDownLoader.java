@@ -38,7 +38,7 @@ public class ContentDownLoader implements Runnable {
         MetaDataExtractor m = new MetaDataExtractor();
         List<String> links = null;
         try {
-            links = gCrawler.getUrlsFromGoogleFromASearchTerm(keyword.trim());
+            links = gCrawler.getUrlsFromGoogleForASearchTerm(keyword.trim());
         } catch (Exception e) {
             e.printStackTrace();
         }

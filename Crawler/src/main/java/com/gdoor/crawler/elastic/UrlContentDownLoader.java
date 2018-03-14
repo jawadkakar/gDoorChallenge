@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class UrlContentDownLoader {
 
-    public StringBuilder contentDownloader(String url) throws MalformedURLException, FileNotFoundException,IOException {
+    public StringBuilder contentDownloader(String url) throws IOException {
         StringBuilder content = new StringBuilder();
         URL u;
         InputStream is = null;
@@ -26,19 +26,7 @@ public class UrlContentDownLoader {
             }
 
 
-        }/* catch (MalformedURLException mue) {
-
-            System.out.println("Ouch - a MalformedURLException happened.");
-            mue.printStackTrace();
-        } catch (FileNotFoundException e){
-            System.out.println("Oops- an FileNotFoundException happened.");
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-
-            System.out.println("Oops- an Exception happened.");
-            e.printStackTrace();
-        } */finally {
+        }finally {
             try {
                 Optional<InputStream> input = Optional.ofNullable(is);
                 if (input.isPresent()) {
@@ -62,10 +50,5 @@ public class UrlContentDownLoader {
         return Jsoup.parse(html).text();
     }
 
-   /* public static void main(String[] args) {
-        UrlContentDownLoader contentDownLoader = new UrlContentDownLoader();
-        StringBuilder content = contentDownLoader.contentDownloader("https://en.wikipedia.org/wiki/Afghanistan");
-        System.out.println(content);
-    }*/
 
 }

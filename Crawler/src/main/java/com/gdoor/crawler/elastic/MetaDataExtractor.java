@@ -98,35 +98,6 @@ public class MetaDataExtractor {
         return holder;
     }
 
-    void powerfullOne() throws IOException {
-        Document doc = Jsoup.connect("http://www.cnn.com/").get();
-        for (Element meta : doc.select("meta")) {
-            System.out.println("Name: " + meta.attr("name") + " - Content: " + meta.attr("content"));
-        }
-    }
-
-
-    static void foo(Document doc) {
-        Elements metaTags = doc.getElementsByTag("meta");
-
-        for (Element metaTag : metaTags) {
-            String content = metaTag.attr("content");
-            String name = metaTag.attr("name");
-
-            if ("d.title".equals(name)) {
-                System.out.println(content);
-            }
-            if ("d.description".equals(name)) {
-                // ex.setDescription(content);
-                System.out.println(content);
-            }
-            if ("d.language".equals(name)) {
-                //  ex.setLanguage(content);
-                System.out.println(content);
-            }
-        }
-    }
-
     protected static class PageAttributeHolder {
         private String title;
         private String description;
